@@ -41,6 +41,29 @@ cd wiggo-release
 git lfs pull --include "v0.1.2/*"
 ```
 
+## Adding a version
+
+From the app repository (`windows/`):
+
+```sh
+npm run package && npm run package:installer
+mkdir -p ../wiggo-release/vX.Y.Z
+cp dist/windows/Wiggo-Portable.zip dist/windows/Wiggo-Setup.* ../wiggo-release/vX.Y.Z/
+```
+
+Then in this repository add the archive's line to `SHA256SUMS`, add a row to
+the table above, commit, tag the commit with the version, and push both:
+
+```sh
+sha256sum vX.Y.Z/Wiggo-Portable.zip >> SHA256SUMS
+git add -A && git commit -m "Publish vX.Y.Z"
+git tag -a vX.Y.Z -m "Wiggo X.Y.Z for Windows (source <commit>)"
+git push origin main && git push origin vX.Y.Z
+```
+
+Old version folders stay in place; a full clone downloads every archive
+through LFS, so use the partial pull above when only one version is needed.
+
 ## What 0.1.2 contains
 
 - The animal window, the material library and the official catalog share one
